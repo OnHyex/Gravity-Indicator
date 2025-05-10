@@ -8,7 +8,7 @@ namespace GravityIndicator
 {
     public class Mod : PulsarMod, IKeybind
     {
-        public override string Version => "1.0.0";
+        public override string Version => "1.1.0";
         public override string Author => "OnHyex";
         public override string ShortDescription => "Adds gravity indicator to pilot ui";
         public override string Name => "Gravity Indicator";

@@ -46,6 +46,7 @@ namespace GravityIndicator
                 if(ElementMode.Value >= Modes.Length - 1)
                 {
                     ElementMode.Value = 0;
+                    Offset.z = 100f;
                 } 
                 else
                 {
@@ -57,7 +58,7 @@ namespace GravityIndicator
 
             GUILayout.EndArea();
 
-            GUILayout.BeginArea(new Rect(10, 100, 400, 150));
+            GUILayout.BeginArea(new Rect(10, 100, 400, 50));
 
             GUILayout.BeginHorizontal();
             if(GUILayout.RepeatButton("Up"))
@@ -68,14 +69,14 @@ namespace GravityIndicator
             {
                 Offset.y -= AdjustmentList[AdjustmentPosition];
             }
-            if (GUILayout.RepeatButton("Scale Up"))
-            {
-                Scale += new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
-                UIAddition.gravityIndicator.transform.localScale = Scale;
-            }
             GUILayout.EndHorizontal();
 
+            GUILayout.EndArea();
+
+            GUILayout.BeginArea(new Rect(10, 125, 400, 50));
+
             GUILayout.BeginHorizontal();
+
             if (GUILayout.RepeatButton("Left"))
             {
                 Offset.x -= AdjustmentList[AdjustmentPosition];
@@ -84,16 +85,51 @@ namespace GravityIndicator
             {
                 Offset.x += AdjustmentList[AdjustmentPosition];
             }
+            
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndArea();
+
+            if(ElementMode == 1)
+            {
+                GUILayout.BeginArea(new Rect(10, 150, 400, 200));
+
+                GUILayout.BeginHorizontal();
+
+                if (GUILayout.RepeatButton("Forward"))
+                {
+                    Offset.z += AdjustmentList[AdjustmentPosition];
+                }
+                if (GUILayout.RepeatButton("Back"))
+                {
+                    Offset.z -= AdjustmentList[AdjustmentPosition];
+                }
+
+                GUILayout.EndHorizontal();
+
+                GUILayout.EndArea();
+            }
+
+            GUILayout.BeginArea(new Rect(10, 175, 400, 200));
+
+            GUILayout.BeginHorizontal();
+
+            if (GUILayout.RepeatButton("Scale Up"))
+            {
+                Scale += new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
+                UIAddition.gravityIndicator.transform.localScale = Scale;
+            }
             if (GUILayout.RepeatButton("Scale Down"))
             {
                 Scale -= new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
                 UIAddition.gravityIndicator.transform.localScale = Scale;
             }
+
             GUILayout.EndHorizontal();
 
             GUILayout.EndArea();
 
-            GUILayout.BeginArea(new Rect(10, 150, 400, 200));
+            GUILayout.BeginArea(new Rect(10, 200, 400, 200));
 
             GUILayout.BeginHorizontal();
             if(GUILayout.Button("ResetPosition"))
