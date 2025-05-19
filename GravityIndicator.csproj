@@ -77,9 +77,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CameraPatch.cs" />
     <Compile Include="GUI.cs" />
+    <Compile Include="Indicator.cs" />
     <Compile Include="Mod.cs" />
-    <Compile Include="Patch.cs" />
+    <Compile Include="UIPatch.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
