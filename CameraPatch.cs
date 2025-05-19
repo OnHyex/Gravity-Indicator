@@ -31,7 +31,7 @@ namespace GravityIndicator
                     __instance.CurrentSubSystem.MainCameras[0].transform.right * GUI.Offset.x +
                     __instance.CurrentSubSystem.MainCameras[0].transform.up * GUI.Offset.y;
                 }
-                else if (PLNetworkManager.Instance != null && PLNetworkManager.Instance.LocalPlayer != null && PLNetworkManager.Instance.LocalPlayer.GetPawn().CurrentShip != null)
+                else if (PLNetworkManager.Instance != null && PLNetworkManager.Instance.LocalPlayer != null && PLNetworkManager.Instance.LocalPlayer.GetPawn() != null && PLNetworkManager.Instance.LocalPlayer.GetPawn().CurrentShip != null)
                 {
                     UIAddition.gravityIndicator.transform.position = PLNetworkManager.Instance.LocalPlayer.GetPawn().CurrentShip.Exterior.transform.position +
                     PLEncounterManager.Instance.PlayerShip.Exterior.transform.forward * GUI.Offset.z +
