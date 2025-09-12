@@ -4,6 +4,7 @@ using PulsarModLoader.CustomGUI;
 using PulsarModLoader;
 using UnityEngine;
 using JetBrains.Annotations;
+using System.Runtime.Serialization.Json;
 
 namespace GravityIndicator
 {
@@ -12,12 +13,20 @@ namespace GravityIndicator
         static SaveValue<float> GravityIndicatorOffsetX = new SaveValue<float>("GravityIndicatorOffsetX", 0f);
         static SaveValue<float> GravityIndicatorOffsetY = new SaveValue<float>("GravityIndicatorOffsetX", 0f);
         static SaveValue<float> GravityIndicatorOffsetZ = new SaveValue<float>("GravityIndicatorOffsetX", 100f);
+        static SaveValue<float> GravityIndicatorUIOffsetX = new SaveValue<float>("GravityIndicatorUIOffsetX", 0f);
+        static SaveValue<float> GravityIndicatorUIOffsetY = new SaveValue<float>("GravityIndicatorUIOffsetY", 0f);
+        static SaveValue<float> GravityIndicatorUIOffsetZ = new SaveValue<float>("GravityIndicatorUIOffsetZ", 0f);
         static SaveValue<float> GravityIndicatorScale = new SaveValue<float>("GravityIndicatorScale", 100f);
+        static SaveValue<float> GravityIndicatorUIScale = new SaveValue<float>("GravityIndicatorUIScale", 100f);
+        static SaveValue<bool> EnabledInSensorDish = new SaveValue<bool>("EnabledInSensorDish", false);
         public static SaveValue<int> ElementMode = new SaveValue<int>("ElementMode", 0);
         internal static Vector3 Offset = new Vector3(GravityIndicatorOffsetX, GravityIndicatorOffsetY, GravityIndicatorOffsetZ);
+        internal static Vector3 UIOffset = new Vector3(GravityIndicatorUIOffsetX, GravityIndicatorUIOffsetY, GravityIndicatorUIOffsetZ);
         internal static Vector3 Scale = new Vector3(GravityIndicatorScale.Value, GravityIndicatorScale.Value, GravityIndicatorScale.Value);
+        internal static Vector3 UIScale = new Vector3(GravityIndicatorUIScale.Value, GravityIndicatorUIScale.Value, GravityIndicatorUIScale.Value);
         private int AdjustmentPosition = 2;
         private string[] Modes = new string[] { "UI Element", "Ship Follow" };
+        private float[] AdjustmentList = { 0.01f, 0.1f, 1f, 10f, 100f };
         public override string Name()
         {
             return "Gravity Indicator";
@@ -28,13 +37,21 @@ namespace GravityIndicator
             GravityIndicatorOffsetX.Value = Offset.x;
             GravityIndicatorOffsetY.Value = Offset.y;
             GravityIndicatorOffsetZ.Value = Offset.z;
+            GravityIndicatorUIOffsetX.Value = UIOffset.x;
+            GravityIndicatorUIOffsetY.Value = UIOffset.y;
+            GravityIndicatorUIOffsetZ.Value = UIOffset.z;
             GravityIndicatorScale.Value = Scale.x;
+            GravityIndicatorUIScale.Value = UIScale.x;
         }
         public override void Draw()
         {
-            UIAddition.IndicatorEnabled = GUILayout.Toggle(UIAddition.IndicatorEnabled, "Toggle", Array.Empty<GUILayoutOption>());
+            GUILayout.BeginHorizontal();
 
-            float[] AdjustmentList = { 0.01f, 0.1f, 1f, 10f, 100f };
+            IndicatorManager.IndicatorEnabled = GUILayout.Toggle(IndicatorManager.IndicatorEnabled, "Enabled Indicator", Array.Empty<GUILayoutOption>());
+
+            EnabledInSensorDish.Value = GUILayout.Toggle(EnabledInSensorDish.Value, "Enabled in Sensor Dish");
+
+            GUILayout.EndHorizontal();
             GUILayout.BeginArea(new Rect(10, 50, 400, 150));
 
             GUILayout.BeginHorizontal();
@@ -46,7 +63,6 @@ namespace GravityIndicator
                 if(ElementMode.Value >= Modes.Length - 1)
                 {
                     ElementMode.Value = 0;
-                    Offset.z = 100f;
                 } 
                 else
                 {
@@ -63,11 +79,27 @@ namespace GravityIndicator
             GUILayout.BeginHorizontal();
             if(GUILayout.RepeatButton("Up"))
             {
-                Offset.y += AdjustmentList[AdjustmentPosition];
+                if (ElementMode == 0)
+                {
+                    UIOffset.y += AdjustmentList[AdjustmentPosition];
+                }
+                else
+                {
+                    Offset.y += AdjustmentList[AdjustmentPosition];
+                }
+                
             }
             if (GUILayout.RepeatButton("Down"))
             {
-                Offset.y -= AdjustmentList[AdjustmentPosition];
+                if (ElementMode == 0)
+                {
+                    UIOffset.y -= AdjustmentList[AdjustmentPosition];
+                }
+                else
+                {
+                    Offset.y -= AdjustmentList[AdjustmentPosition];
+                }
+                
             }
             GUILayout.EndHorizontal();
 
@@ -79,11 +111,27 @@ namespace GravityIndicator
 
             if (GUILayout.RepeatButton("Left"))
             {
-                Offset.x -= AdjustmentList[AdjustmentPosition];
+                if (ElementMode == 0)
+                {
+                    UIOffset.x -= AdjustmentList[AdjustmentPosition];
+                }
+                else
+                {
+                    Offset.x -= AdjustmentList[AdjustmentPosition];
+                }
+                
             }
             if (GUILayout.RepeatButton("Right"))
             {
-                Offset.x += AdjustmentList[AdjustmentPosition];
+                if (ElementMode == 0)
+                {
+                    UIOffset.x += AdjustmentList[AdjustmentPosition];
+                }
+                else
+                {
+                    Offset.x += AdjustmentList[AdjustmentPosition];
+                }
+                
             }
             
             GUILayout.EndHorizontal();
@@ -116,13 +164,28 @@ namespace GravityIndicator
 
             if (GUILayout.RepeatButton("Scale Up"))
             {
-                Scale += new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
-                UIAddition.gravityIndicator.transform.localScale = Scale;
+                if (ElementMode == 0)
+                {
+                    UIScale += new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
+                    
+                }
+                else
+                {
+                    Scale += new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
+                }
+                    
             }
             if (GUILayout.RepeatButton("Scale Down"))
             {
-                Scale -= new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
-                UIAddition.gravityIndicator.transform.localScale = Scale;
+                if (ElementMode == 0)
+                {
+                    UIScale -= new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
+                }
+                else
+                {
+                    Scale -= new Vector3(AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition], AdjustmentList[AdjustmentPosition]);
+                }
+                    
             }
 
             GUILayout.EndHorizontal();
@@ -134,12 +197,25 @@ namespace GravityIndicator
             GUILayout.BeginHorizontal();
             if(GUILayout.Button("ResetPosition"))
             {
-                Offset = new Vector3(0f, 0f, 100f);
+                if (ElementMode.Value == 0)
+                {
+                    UIOffset = new Vector3(0f, 0f, 100f);
+                }
+                else
+                {
+                    Offset = new Vector3(0f, 0f, 0f);
+                }
             }
             if (GUILayout.Button("ResetScale"))
             {
-                Scale = new Vector3(100f, 100f, 100f);
-                UIAddition.gravityIndicator.transform.localScale = Scale;
+                if (ElementMode.Value == 0)
+                {
+                    UIScale = new Vector3(100f, 100f, 100f);
+                }
+                else
+                {
+                    Scale = new Vector3(100f, 100f, 100f);
+                }
             }
             GUILayout.EndHorizontal();
 
@@ -173,6 +249,15 @@ namespace GravityIndicator
             GUILayout.EndHorizontal();
 
             GUILayout.EndArea();
+            if (ElementMode == 0)
+            {
+                IndicatorManager.gravityIndicator.transform.localScale = UIScale;
+            }
+            else
+            {
+                IndicatorManager.gravityIndicator.transform.localScale = Scale;
+            }
+            
         }
     }
 }
