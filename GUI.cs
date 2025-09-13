@@ -18,8 +18,8 @@ namespace GravityIndicator
         static SaveValue<float> GravityIndicatorUIOffsetZ = new SaveValue<float>("GravityIndicatorUIOffsetZ", 0f);
         static SaveValue<float> GravityIndicatorScale = new SaveValue<float>("GravityIndicatorScale", 100f);
         static SaveValue<float> GravityIndicatorUIScale = new SaveValue<float>("GravityIndicatorUIScale", 100f);
-        static SaveValue<bool> EnabledInSensorDish = new SaveValue<bool>("EnabledInSensorDish", false);
-        public static SaveValue<int> ElementMode = new SaveValue<int>("ElementMode", 0);
+        internal static SaveValue<bool> EnabledInSensorDish = new SaveValue<bool>("EnabledInSensorDish", false);
+        internal static SaveValue<int> ElementMode = new SaveValue<int>("ElementMode", 0);
         internal static Vector3 Offset = new Vector3(GravityIndicatorOffsetX, GravityIndicatorOffsetY, GravityIndicatorOffsetZ);
         internal static Vector3 UIOffset = new Vector3(GravityIndicatorUIOffsetX, GravityIndicatorUIOffsetY, GravityIndicatorUIOffsetZ);
         internal static Vector3 Scale = new Vector3(GravityIndicatorScale.Value, GravityIndicatorScale.Value, GravityIndicatorScale.Value);

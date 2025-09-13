@@ -37,7 +37,7 @@ namespace GravityIndicator
                 }
                 if (IndicatorEnabled)
                 {
-                    indicatorMesh.enabled = IndicatorEnabled && (PLUIOutsideWorldUI.Instance.pilotingHUDActive || (PLCameraSystem.Instance.GetModeString() == "SensorDish"));
+                    indicatorMesh.enabled = IndicatorEnabled && (PLUIOutsideWorldUI.Instance.pilotingHUDActive || (GUI.EnabledInSensorDish && PLCameraSystem.Instance.GetModeString() == "SensorDish"));
                     if (GUI.ElementMode == 1)
                     {
                         PLPawn pawn = PLNetworkManager.Instance.ViewedPawn;
